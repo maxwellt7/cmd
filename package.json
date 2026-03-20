@@ -11,7 +11,9 @@
     "db:push": "turbo db:push"
   },
   "devDependencies": {
-    "turbo": "^2.8.0"
+    "turbo": "^2.8.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.0"
   },
   "packageManager": "pnpm@9.15.0"
 }
