@@ -5,19 +5,25 @@ import { RelayStatus } from "../../components/relay-status";
 import { UserMenu } from "../../components/user-menu";
 import { getAccessibleTabs } from "@cmd/auth";
 import type { UserRole } from "@cmd/types";
+import { isClerkConfigured } from "../../lib/clerk";
 
 export default async function TabsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { userId, sessionClaims } = await auth();
+  let role: UserRole = "admin";
 
-  if (!userId) {
-    redirect("/sign-in");
+  if (isClerkConfigured) {
+    const { userId, sessionClaims } = await auth();
+
+    if (!userId) {
+      redirect("/sign-in");
+    }
+
+    role = (sessionClaims?.metadata as { role?: UserRole })?.role ?? "admin";
   }
 
-  const role = (sessionClaims?.metadata as { role?: UserRole })?.role ?? "admin";
   const accessibleTabs = getAccessibleTabs(role);
 
   return (
@@ -28,6 +34,11 @@ export default async function TabsLayout({
           <TabNav accessibleTabs={accessibleTabs} />
         </div>
         <div className="flex items-center gap-3">
+          {!isClerkConfigured ? (
+            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-300">
+              Preview mode
+            </span>
+          ) : null}
           <RelayStatus status="offline" />
           <UserMenu />
         </div>

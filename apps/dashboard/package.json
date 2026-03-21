@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --config eslint.config.mjs --ext .js,.mjs && tsc --noEmit",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
