@@ -18,9 +18,9 @@ export function IntegrationCard({ integration }: IntegrationCardProps) {
   }
 
   return (
-    <div className="flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-5">
-      <div className="flex items-center justify-between">
-        <h3 className="font-semibold text-zinc-50">{integration.name}</h3>
+    <div className="flex flex-col gap-2 md:gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="font-semibold text-zinc-50 break-words">{integration.name}</h3>
         <span
           className={cn(
             "flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium",

@@ -41,7 +41,7 @@ export function AgentCard({ agent, onEdit }: AgentCardProps) {
   return (
     <div
       className={cn(
-        "group relative flex flex-col gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-700",
+        "group relative flex flex-col gap-2 md:gap-3 rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5 transition-colors hover:border-zinc-700",
         isPending && "pointer-events-none opacity-60"
       )}
     >
@@ -76,7 +76,7 @@ export function AgentCard({ agent, onEdit }: AgentCardProps) {
         <p className="text-sm text-zinc-400 line-clamp-2">{agent.description}</p>
       )}
 
-      <div className="flex items-center gap-4 text-xs text-zinc-500">
+      <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs text-zinc-500">
         <span>Messages today: {agent.messagesToday}</span>
         <span>Last active: {formatTime(agent.lastActiveAt)}</span>
       </div>

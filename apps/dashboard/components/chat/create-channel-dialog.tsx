@@ -47,7 +47,7 @@ export function CreateChannelDialog({ onClose }: CreateChannelDialogProps) {
       onClick={handleOverlayClick}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
     >
-      <div className="w-full max-w-md rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+      <div className="w-[calc(100%-2rem)] max-w-md mx-auto rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
         <h2 className="mb-1 text-lg font-semibold text-zinc-100">Create Channel</h2>
         <p className="mb-5 text-sm text-zinc-500">Add a new agent channel to start chatting.</p>
 

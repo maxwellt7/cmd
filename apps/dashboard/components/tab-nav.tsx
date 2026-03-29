@@ -21,7 +21,7 @@ export function TabNav({ accessibleTabs }: TabNavProps) {
   const visibleTabs = TABS.filter((tab) => accessibleTabs.includes(tab.key));
 
   return (
-    <div className="flex gap-0.5 rounded-lg bg-zinc-900 p-0.5">
+    <div className="flex overflow-x-auto gap-0.5 rounded-lg bg-zinc-900 p-0.5">
       {visibleTabs.map((tab) => {
         const isActive = pathname.startsWith(tab.href);
         return (

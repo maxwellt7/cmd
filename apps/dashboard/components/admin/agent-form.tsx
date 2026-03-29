@@ -70,7 +70,7 @@ export function AgentForm({ agent, onClose }: AgentFormProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-2xl">
+      <div className="w-[calc(100%-2rem)] max-w-lg mx-auto rounded-xl border border-zinc-800 bg-zinc-900 p-4 md:p-6 shadow-2xl">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-zinc-50">
             {isEditing ? "Edit Agent" : "Add Agent"}

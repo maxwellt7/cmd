@@ -41,9 +41,9 @@ export function VtoEditor({ sections }: { sections: VtoSectionData[] }) {
         </p>
       </div>
 
-      <div className="flex gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Sidebar */}
-        <nav className="w-48 shrink-0 space-y-0.5">
+        <nav className="w-full lg:w-48 lg:shrink-0 flex lg:flex-col gap-1 lg:gap-0.5 overflow-x-auto lg:overflow-x-visible [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {VTO_KEYS.map((item) => {
             const section = sectionMap.get(item.key);
             return (
@@ -52,7 +52,7 @@ export function VtoEditor({ sections }: { sections: VtoSectionData[] }) {
                 type="button"
                 onClick={() => setActiveKey(item.key)}
                 className={cn(
-                  "w-full rounded-md px-3 py-2 text-left text-sm transition-colors",
+                  "shrink-0 lg:shrink w-auto lg:w-full rounded-md px-3 py-2 text-left text-sm whitespace-nowrap transition-colors",
                   activeKey === item.key
                     ? "bg-zinc-800 text-zinc-50"
                     : "text-zinc-500 hover:bg-zinc-900 hover:text-zinc-300"

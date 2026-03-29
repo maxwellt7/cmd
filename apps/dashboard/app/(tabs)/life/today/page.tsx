@@ -31,7 +31,7 @@ export default async function TodayPage(props: {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <h1 className="text-2xl font-bold">Today&apos;s Priorities</h1>
+      <h1 className="text-xl md:text-2xl font-bold">Today&apos;s Priorities</h1>
       <TodayView priorities={serialized} currentDate={date} />
     </div>
   );

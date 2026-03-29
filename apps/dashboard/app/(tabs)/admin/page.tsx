@@ -56,11 +56,11 @@ export default async function AdminOverviewPage() {
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="flex items-center gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-5"
+            className="flex items-center gap-3 md:gap-4 rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5"
           >
             <span className="text-2xl">{card.icon}</span>
             <div>
-              <p className="text-2xl font-bold text-zinc-50">{card.value}</p>
+              <p className="text-xl md:text-2xl font-bold text-zinc-50">{card.value}</p>
               <p className="text-xs text-zinc-500">{card.label}</p>
             </div>
           </div>
@@ -70,8 +70,8 @@ export default async function AdminOverviewPage() {
       {/* Recent Activity */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Recent Agents */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-400">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
+          <h2 className="mb-3 md:mb-4 text-sm font-semibold text-zinc-400">
             Recently Updated Agents
           </h2>
           {activity.recentAgents.length === 0 ? (
@@ -106,8 +106,8 @@ export default async function AdminOverviewPage() {
         </div>
 
         {/* Recent Queue */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
-          <h2 className="mb-4 text-sm font-semibold text-zinc-400">
+        <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
+          <h2 className="mb-3 md:mb-4 text-sm font-semibold text-zinc-400">
             Recent Queue Activity
           </h2>
           {activity.recentQueue.length === 0 ? (

@@ -47,7 +47,7 @@ export function MessageInput({ channelId }: MessageInputProps) {
   }
 
   return (
-    <div className="border-t border-zinc-800 bg-zinc-950/60 px-5 py-3">
+    <div className="border-t border-zinc-800 bg-zinc-950/60 px-3 md:px-5 py-3">
       <div className="flex items-end gap-3">
         <textarea
           ref={textareaRef}

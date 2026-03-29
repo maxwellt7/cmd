@@ -93,7 +93,7 @@ export function PipelineView({ entries }: PipelineViewProps) {
       <div key={entry.id} className="group">
         <div
           className={cn(
-            "flex items-center gap-3 rounded-lg border p-3 transition-colors",
+            "flex flex-wrap items-center gap-2 md:gap-3 rounded-lg border p-2 md:p-3 transition-colors",
             LEVEL_COLORS[entry.level] ?? "border-zinc-800 bg-zinc-900"
           )}
         >
@@ -127,7 +127,7 @@ export function PipelineView({ entries }: PipelineViewProps) {
           {/* Progress input */}
           <form
             action={updateProgress}
-            className="flex items-center gap-1"
+            className="flex items-center gap-1 shrink-0"
           >
             <input type="hidden" name="id" value={entry.id} />
             <input
@@ -160,7 +160,7 @@ export function PipelineView({ entries }: PipelineViewProps) {
 
         {/* Children */}
         {isExpanded && (
-          <div className="ml-6 mt-1 space-y-1 border-l border-zinc-800 pl-3">
+          <div className="ml-3 md:ml-6 mt-1 space-y-1 border-l border-zinc-800 pl-2 md:pl-3">
             {children.map((child) => renderEntry(child, levelIndex + 1))}
             {childLevel && (
               <>
@@ -247,7 +247,7 @@ function AddEntryForm({
         placeholder="Description (optional)"
         className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-300 placeholder-zinc-600 focus:border-zinc-600 focus:outline-none"
       />
-      <div className="flex gap-2">
+      <div className="flex flex-col sm:flex-row gap-2">
         <input
           type="date"
           name="startDate"

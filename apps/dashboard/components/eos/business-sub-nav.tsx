@@ -19,8 +19,8 @@ export function BusinessSubNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b border-zinc-800 bg-zinc-950/60 px-5">
-      <div className="flex gap-0.5 overflow-x-auto py-2">
+    <nav className="border-b border-zinc-800 bg-zinc-950/60 px-3 md:px-5">
+      <div className="flex gap-0.5 overflow-x-auto py-2 [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {SECTIONS.map((section) => {
           const isActive =
             section.href === "/business"

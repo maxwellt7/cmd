@@ -18,7 +18,7 @@ export function ChannelSidebar({ channels }: ChannelSidebarProps) {
   const activeId = params.channelId;
 
   return (
-    <aside className="flex w-[260px] shrink-0 flex-col border-r border-zinc-800 bg-zinc-950">
+    <aside className="hidden md:flex md:w-[260px] shrink-0 flex-col border-r border-zinc-800 bg-zinc-950">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-zinc-800 px-4 py-3">
         <h2 className="text-sm font-semibold text-zinc-300">Channels</h2>

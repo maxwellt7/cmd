@@ -40,9 +40,9 @@ export function PillarCard({ pillar, weekStart, currentScore, currentNotes, hist
   const maxScore = 10;
 
   return (
-    <div className={cn("rounded-xl border bg-zinc-900 p-5", style.bg)}>
+    <div className={cn("rounded-xl border bg-zinc-900 p-3 md:p-5", style.bg)}>
       <div className="flex items-center justify-between">
-        <h3 className={cn("text-lg font-bold uppercase tracking-wide", style.color)}>
+        <h3 className={cn("text-base md:text-lg font-bold uppercase tracking-wide", style.color)}>
           {style.label}
         </h3>
         <span className={cn("text-3xl font-bold", style.color)}>{score}</span>

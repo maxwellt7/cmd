@@ -68,7 +68,7 @@ export function TodayView({ priorities, currentDate }: TodayViewProps) {
   return (
     <div className="space-y-4">
       {/* Date picker */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 md:gap-3">
         <input
           type="date"
           value={currentDate}
@@ -85,7 +85,7 @@ export function TodayView({ priorities, currentDate }: TodayViewProps) {
 
       {/* Completion bar */}
       {total > 0 && (
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 md:gap-3">
           <div className="h-2.5 flex-1 rounded-full bg-zinc-800">
             <div
               className="h-2.5 rounded-full bg-emerald-500 transition-all"
@@ -114,7 +114,7 @@ export function TodayView({ priorities, currentDate }: TodayViewProps) {
             {items.map((item) => (
               <div
                 key={item.id}
-                className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 group"
+                className="flex items-center gap-2 md:gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 md:px-4 py-2.5 group"
               >
                 <form action={togglePriority}>
                   <input type="hidden" name="id" value={item.id} />

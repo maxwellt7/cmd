@@ -16,7 +16,7 @@ export function LifeSubNav() {
   const pathname = usePathname();
 
   return (
-    <div className="flex gap-0.5 rounded-lg bg-zinc-900 p-0.5">
+    <div className="flex gap-0.5 rounded-lg bg-zinc-900 p-0.5 overflow-x-auto whitespace-nowrap">
       {LIFE_TABS.map((tab) => {
         const isActive =
           tab.href === "/life"

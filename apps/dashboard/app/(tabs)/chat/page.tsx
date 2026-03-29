@@ -1,5 +1,6 @@
 import { getChannels } from "../../actions/chat";
 import { ChannelSidebar } from "../../../components/chat/channel-sidebar";
+import { MobileChannelList } from "../../../components/chat/mobile-channel-list";
 
 export const dynamic = "force-dynamic";
 
@@ -22,11 +23,18 @@ export default async function ChatPage() {
           </>
         ) : (
           <>
-            <span className="text-4xl">{"\uD83D\uDC48"}</span>
-            <h2 className="text-lg font-semibold text-zinc-200">Select a channel</h2>
-            <p className="text-sm text-zinc-500">
-              Pick a channel from the sidebar to view messages.
-            </p>
+            {/* Desktop: prompt to pick from sidebar */}
+            <div className="hidden md:flex flex-col items-center gap-4">
+              <span className="text-4xl">{"\uD83D\uDC48"}</span>
+              <h2 className="text-lg font-semibold text-zinc-200">Select a channel</h2>
+              <p className="text-sm text-zinc-500">
+                Pick a channel from the sidebar to view messages.
+              </p>
+            </div>
+            {/* Mobile: show channel list inline */}
+            <div className="flex md:hidden w-full flex-col">
+              <MobileChannelList channels={channels} />
+            </div>
           </>
         )}
       </div>

@@ -33,7 +33,7 @@ export default async function TabsLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="flex items-center justify-between border-b border-zinc-800 bg-zinc-950/80 px-5 py-3">
+      <header className="flex flex-wrap items-center justify-between border-b border-zinc-800 bg-zinc-950/80 px-3 md:px-5 py-3">
         <div className="flex items-center gap-4">
           <span className="text-lg font-bold tracking-tight">{"\u26A1"} CMD</span>
           <TabNav accessibleTabs={accessibleTabs} />

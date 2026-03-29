@@ -32,7 +32,7 @@ export default async function PillarsPage() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <h1 className="text-2xl font-bold">Four Pillars</h1>
+      <h1 className="text-xl md:text-2xl font-bold">Four Pillars</h1>
       <p className="text-sm text-zinc-500">
         Score each pillar from 1-10 every week. Track your balance across Profit, Power, Purpose, and Presence.
       </p>

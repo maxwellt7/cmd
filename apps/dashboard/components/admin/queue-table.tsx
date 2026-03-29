@@ -80,7 +80,7 @@ export function QueueTable() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-between">
         <div className="flex gap-1 rounded-lg bg-zinc-950 p-1">
           {STATUS_FILTERS.map((s) => (
             <button
@@ -115,8 +115,8 @@ export function QueueTable() {
         </div>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-zinc-800">
-        <table className="w-full text-left text-sm">
+      <div className="overflow-x-auto overflow-hidden rounded-xl border border-zinc-800">
+        <table className="w-full text-left text-xs md:text-sm">
           <thead>
             <tr className="border-b border-zinc-800 bg-zinc-950/50">
               <th className="px-4 py-3 text-xs font-medium text-zinc-500">
@@ -173,7 +173,7 @@ export function QueueTable() {
                   <td className="px-4 py-3 font-mono text-xs text-zinc-400">
                     {truncateId(entry.channelId)}
                   </td>
-                  <td className="max-w-[240px] px-4 py-3 text-xs text-zinc-300">
+                  <td className="max-w-[120px] md:max-w-[240px] px-3 md:px-4 py-3 text-xs text-zinc-300 truncate">
                     {truncateContent(entry.content)}
                   </td>
                   <td className="px-4 py-3">

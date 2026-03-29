@@ -52,9 +52,9 @@ export function TodoList({ todos }: { todos: TodoItem[] }) {
             await addTodo(formData);
             setShowAddForm(false);
           }}
-          className="rounded-lg border border-zinc-800 bg-zinc-900 p-4 space-y-3"
+          className="rounded-lg border border-zinc-800 bg-zinc-900 p-3 md:p-4 space-y-3"
         >
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="mb-1 block text-xs text-zinc-500">Title</label>
               <input
@@ -150,7 +150,7 @@ export function TodoList({ todos }: { todos: TodoItem[] }) {
 
 function TodoRow({ todo }: { todo: TodoItem }) {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3 transition-colors hover:bg-zinc-800/60">
+    <div className="flex items-center gap-2 md:gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 md:px-4 py-2.5 md:py-3 transition-colors hover:bg-zinc-800/60">
       <form action={toggleTodo}>
         <input type="hidden" name="id" value={todo.id} />
         <input type="hidden" name="completed" value={String(todo.completed)} />
@@ -169,13 +169,13 @@ function TodoRow({ todo }: { todo: TodoItem }) {
       <div className="min-w-0 flex-1">
         <p
           className={cn(
-            "text-sm",
+            "text-sm break-words",
             todo.completed ? "text-zinc-500 line-through" : "text-zinc-200"
           )}
         >
           {todo.title}
         </p>
-        <div className="flex items-center gap-2 text-xs text-zinc-600">
+        <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600">
           <span>{todo.ownerName}</span>
           {todo.dueDate && (
             <>

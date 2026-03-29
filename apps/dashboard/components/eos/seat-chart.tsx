@@ -89,7 +89,7 @@ function SeatCard({
     <div className="space-y-3">
       <div
         className={cn(
-          "rounded-lg border border-zinc-800 bg-zinc-900 p-4 transition-colors hover:border-zinc-700",
+          "rounded-lg border border-zinc-800 bg-zinc-900 p-3 md:p-4 transition-colors hover:border-zinc-700",
           depth === 0 && "border-zinc-700"
         )}
       >
@@ -102,7 +102,7 @@ function SeatCard({
             className="space-y-3"
           >
             <input type="hidden" name="id" value={node.id} />
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <div>
                 <label className="mb-1 block text-[10px] text-zinc-500">
                   Seat Title
@@ -256,7 +256,7 @@ function SeatCard({
                   await addSeat(formData);
                   setShowAddChild(false);
                 }}
-                className="flex items-center gap-2"
+                className="flex flex-col md:flex-row md:items-center gap-2"
               >
                 <input type="hidden" name="parentSeatId" value={node.id} />
                 <input
@@ -301,7 +301,7 @@ function SeatCard({
 
       {/* Children */}
       {node.children.length > 0 && (
-        <div className="ml-8 space-y-3 border-l border-zinc-800 pl-4">
+        <div className="ml-4 md:ml-8 space-y-3 border-l border-zinc-800 pl-3 md:pl-4">
           {node.children
             .sort((a, b) => a.sortOrder - b.sortOrder)
             .map((child) => (
@@ -354,7 +354,7 @@ export function SeatChart({ seats }: { seats: SeatData[] }) {
           }}
           className="rounded-lg border border-zinc-800 bg-zinc-900 p-4 space-y-3"
         >
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs text-zinc-500">
                 Seat Title

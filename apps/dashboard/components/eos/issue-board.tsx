@@ -56,9 +56,9 @@ export function IssueBoard({ issues }: { issues: IssueItem[] }) {
             await addIssue(formData);
             setShowAddForm(false);
           }}
-          className="rounded-lg border border-zinc-800 bg-zinc-900 p-4 space-y-3"
+          className="rounded-lg border border-zinc-800 bg-zinc-900 p-3 md:p-4 space-y-3"
         >
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="mb-1 block text-xs text-zinc-500">Title</label>
               <input
@@ -182,7 +182,7 @@ function IssueCard({
   const prevPhase = idx > 0 ? phaseOrder[idx - 1] : null;
 
   return (
-    <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-3 space-y-2">
+    <div className="rounded-lg border border-zinc-800 bg-zinc-900 p-2.5 md:p-3 space-y-2">
       <div className="flex items-start justify-between gap-2">
         <h4 className="text-sm font-medium text-zinc-200">{issue.title}</h4>
         {issue.priority > 0 && (

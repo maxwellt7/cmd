@@ -56,7 +56,7 @@ export default async function LifeOverview() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <h1 className="text-2xl font-bold">Life Overview</h1>
+      <h1 className="text-xl md:text-2xl font-bold">Life Overview</h1>
 
       {/* Pillar Score Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -92,9 +92,9 @@ export default async function LifeOverview() {
       </div>
 
       {/* Today's Priorities Summary */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Today&apos;s Priorities</h2>
+          <h2 className="text-base md:text-lg font-semibold">Today&apos;s Priorities</h2>
           <Link
             href="/life/today"
             className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
@@ -150,9 +150,9 @@ export default async function LifeOverview() {
       </div>
 
       {/* Recent Journal */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-5">
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Recent Journal</h2>
+          <h2 className="text-base md:text-lg font-semibold">Recent Journal</h2>
           <Link
             href="/life/journal"
             className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"

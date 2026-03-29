@@ -39,7 +39,7 @@ export function AddRockForm({ quarter }: { quarter: string }) {
       className="rounded-lg border border-zinc-800 bg-zinc-900 p-4 space-y-3"
     >
       <input type="hidden" name="quarter" value={quarter} />
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div className="col-span-2">
           <label className="mb-1 block text-xs text-zinc-500">Rock Title</label>
           <input

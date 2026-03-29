@@ -189,7 +189,7 @@ function ActiveMeeting({ meeting }: { meeting: MeetingData }) {
   );
 
   return (
-    <div className="rounded-lg border border-emerald-500/20 bg-zinc-900 p-5 space-y-4">
+    <div className="rounded-lg border border-emerald-500/20 bg-zinc-900 p-3 md:p-5 space-y-4">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-emerald-400">
@@ -232,7 +232,7 @@ function ActiveMeeting({ meeting }: { meeting: MeetingData }) {
       </div>
 
       {/* Segment cards */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
         {SEGMENTS.map((seg, idx) => {
           const isCurrent = seg.key === meeting.currentSegment;
           const isPast = idx < currentIdx;
@@ -240,7 +240,7 @@ function ActiveMeeting({ meeting }: { meeting: MeetingData }) {
             <div
               key={seg.key}
               className={cn(
-                "rounded-lg border p-2.5 text-center transition-colors",
+                "rounded-lg border p-2 md:p-2.5 text-center transition-colors overflow-hidden",
                 isCurrent
                   ? "border-emerald-500/30 bg-emerald-500/5"
                   : isPast

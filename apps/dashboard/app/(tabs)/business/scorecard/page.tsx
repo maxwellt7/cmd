@@ -63,7 +63,7 @@ export default async function ScorecardPage() {
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-zinc-800">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs md:text-sm">
             <thead>
               <tr className="border-b border-zinc-800 bg-zinc-900/80">
                 <th className="sticky left-0 z-10 bg-zinc-900/80 px-4 py-2.5 text-left text-xs font-medium uppercase tracking-wider text-zinc-500">
@@ -75,10 +75,10 @@ export default async function ScorecardPage() {
                 <th className="px-3 py-2.5 text-right text-xs font-medium uppercase tracking-wider text-zinc-500">
                   Goal
                 </th>
-                {weeks.map((w) => (
+                {weeks.map((w, idx) => (
                   <th
                     key={w}
-                    className="px-2 py-2.5 text-right text-xs font-medium text-zinc-600"
+                    className={`px-2 py-2.5 text-right text-xs font-medium text-zinc-600${idx < weeks.length - 4 ? " hidden lg:table-cell" : ""}`}
                   >
                     {formatWeek(w)}
                   </th>
@@ -104,10 +104,10 @@ export default async function ScorecardPage() {
                   <td className="px-3 py-2 text-right tabular-nums text-zinc-300">
                     {kpi.goal}
                   </td>
-                  {weeks.map((w) => {
+                  {weeks.map((w, idx) => {
                     const entry = entryMap.get(`${kpi.id}:${w}`);
                     return (
-                      <td key={w} className="px-1 py-1">
+                      <td key={w} className={`px-1 py-1${idx < weeks.length - 4 ? " hidden lg:table-cell" : ""}`}>
                         <EntryEditor
                           kpiId={kpi.id}
                           entryId={entry?.id ?? null}

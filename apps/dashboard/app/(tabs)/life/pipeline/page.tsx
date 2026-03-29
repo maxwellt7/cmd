@@ -33,7 +33,7 @@ export default async function PipelinePage() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <h1 className="text-2xl font-bold">Goal Pipeline</h1>
+      <h1 className="text-xl md:text-2xl font-bold">Goal Pipeline</h1>
       <p className="text-sm text-zinc-500">
         Hierarchical goals from life-level down to daily actions. Each level feeds into the next.
       </p>

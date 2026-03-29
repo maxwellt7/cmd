@@ -52,7 +52,7 @@ export function MessageList({ messages, channelEmoji }: MessageListProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-y-auto px-5 py-4">
+    <div className="flex flex-1 flex-col overflow-y-auto px-3 md:px-5 py-4">
       <div className="flex-1" />
       {messages.map((msg, i) => {
         const isUser = msg.role === "user";
@@ -77,7 +77,7 @@ export function MessageList({ messages, channelEmoji }: MessageListProps) {
             >
               <div
                 className={cn(
-                  "max-w-[70%] rounded-lg px-3.5 py-2.5",
+                  "max-w-[85%] md:max-w-[70%] rounded-lg px-3.5 py-2.5",
                   isUser
                     ? "bg-zinc-700 text-zinc-100"
                     : "bg-zinc-800 text-zinc-200"

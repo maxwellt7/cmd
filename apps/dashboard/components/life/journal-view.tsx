@@ -108,7 +108,7 @@ export function JournalView({ entries, filterDate }: JournalViewProps) {
   return (
     <div className="space-y-4">
       {/* Date filter */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 md:gap-3">
         <input
           type="date"
           value={filterDate ?? ""}
@@ -127,7 +127,7 @@ export function JournalView({ entries, filterDate }: JournalViewProps) {
 
       {/* Compose */}
       {showCompose ? (
-        <div className="rounded-xl border border-zinc-700 bg-zinc-900 p-5 space-y-4">
+        <div className="rounded-xl border border-zinc-700 bg-zinc-900 p-3 md:p-5 space-y-3 md:space-y-4">
           <p className="text-sm font-medium text-zinc-400">Choose a stack type:</p>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {STACK_TYPES.map((st) => (
