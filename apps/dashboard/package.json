@@ -10,23 +10,24 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@clerk/nextjs": "^6.0.0",
+    "@clerk/themes": "^2.0.0",
+    "@cmd/auth": "workspace:*",
+    "@cmd/db": "workspace:*",
+    "@cmd/types": "workspace:*",
+    "@cmd/ui": "workspace:*",
+    "geist": "^1.4.0",
     "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@clerk/nextjs": "^6.0.0",
-    "@clerk/themes": "^2.0.0",
-    "@cmd/db": "workspace:*",
-    "@cmd/auth": "workspace:*",
-    "@cmd/types": "workspace:*",
-    "@cmd/ui": "workspace:*",
-    "geist": "^1.4.0"
+    "svix": "^1.89.0"
   },
   "devDependencies": {
-    "typescript": "^5.7.0",
+    "@tailwindcss/postcss": "^4.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "postcss": "^8.5.0",
     "tailwindcss": "^4.0.0",
-    "@tailwindcss/postcss": "^4.0.0",
-    "postcss": "^8.5.0"
+    "typescript": "^5.7.0"
   }
 }
