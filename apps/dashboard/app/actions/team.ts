@@ -106,7 +106,7 @@ export async function inviteTeamMember(formData: FormData) {
     status: "pending",
   });
 
-  // Send invite email via Resend
+  // Send invite email via Resend (from verified email.cmdcntr.app domain)
   if (process.env.RESEND_API_KEY) {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://www.cmdcntr.app";
