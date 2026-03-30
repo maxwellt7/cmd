@@ -114,7 +114,7 @@ export async function inviteTeamMember(formData: FormData) {
     const companyName = company?.name || "a company";
 
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || "CMD <onboarding@resend.dev>",
+      from: "CMD <team@email.cmdcntr.app>",
       to: email,
       subject: `${inviterName} invited you to join ${companyName} on CMD`,
       html: `
