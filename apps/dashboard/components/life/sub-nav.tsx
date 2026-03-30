@@ -9,7 +9,10 @@ const LIFE_TABS = [
   { label: "Pillars", href: "/life/pillars" },
   { label: "Pipeline", href: "/life/pipeline" },
   { label: "Today", href: "/life/today" },
+  { label: "Weekly", href: "/life/weekly" },
   { label: "Journal", href: "/life/journal" },
+  { label: "Stacks", href: "/life/stacks" },
+  { label: "History", href: "/life/stacks/history" },
 ];
 
 export function LifeSubNav() {
@@ -21,7 +24,9 @@ export function LifeSubNav() {
         const isActive =
           tab.href === "/life"
             ? pathname === "/life"
-            : pathname.startsWith(tab.href);
+            : tab.href === "/life/stacks"
+              ? pathname.startsWith("/life/stacks") && !pathname.startsWith("/life/stacks/history")
+              : pathname.startsWith(tab.href);
         return (
           <Link
             key={tab.href}

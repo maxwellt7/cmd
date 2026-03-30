@@ -44,3 +44,40 @@ export interface JournalEntry {
   content: string;
   createdAt: Date;
 }
+
+// ---------------------------------------------------------------------------
+// Sovereignty Stack System
+// ---------------------------------------------------------------------------
+
+export type StackType = "gratitude" | "idea" | "discover" | "angry";
+export type Core4Domain = "mind" | "body" | "being" | "balance";
+export type StackStatus = "in_progress" | "completed";
+
+export interface StackSession {
+  id: string;
+  userId: string | null;
+  title: string;
+  stackType: StackType;
+  core4Domain: Core4Domain;
+  status: StackStatus;
+  currentQuestionIndex: number;
+  subjectEntity: string | null;
+  createdAt: Date;
+  completedAt: Date | null;
+}
+
+export interface StackMessage {
+  id: string;
+  sessionId: string;
+  role: "user" | "assistant";
+  content: string;
+  questionNumber: number | null;
+  createdAt: Date;
+}
+
+// ---------------------------------------------------------------------------
+// Priority enhancements
+// ---------------------------------------------------------------------------
+
+export type PriorityCategory = "hit_list" | "do_list";
+export type PriorityLevel = "urgent_important" | "important" | "urgent" | "normal";

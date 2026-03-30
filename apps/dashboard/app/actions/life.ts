@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { createDb, pillarScores, pipelineEntries, priorities, journalEntries, eq, and, desc, asc } from "@cmd/db";
+import { createDb, pillarScores, pipelineEntries, priorities, journalEntries, eq, and, desc, asc, gte, lte } from "@cmd/db";
 import type { PillarKey, PipelineLevel } from "@cmd/types";
 
 function getDb() {
@@ -120,6 +120,12 @@ export async function addPriority(formData: FormData) {
   const title = formData.get("title") as string;
   const pillar = formData.get("pillar") as PillarKey;
   const date = formData.get("date") as string;
+  const category = (formData.get("category") as string) || "hit_list";
+  const domain = (formData.get("domain") as string) || null;
+  const priority = (formData.get("priority_level") as string) || null;
+  const startTime = (formData.get("startTime") as string) || null;
+  const endTime = (formData.get("endTime") as string) || null;
+  const notes = (formData.get("notes") as string) || null;
 
   const existing = await db
     .select()
@@ -136,10 +142,17 @@ export async function addPriority(formData: FormData) {
     date,
     completed: false,
     sortOrder: nextOrder,
+    category,
+    domain,
+    priority,
+    startTime,
+    endTime,
+    notes,
   });
 
   revalidatePath("/life");
   revalidatePath("/life/today");
+  revalidatePath("/life/weekly");
 }
 
 export async function togglePriority(formData: FormData) {
@@ -154,6 +167,7 @@ export async function togglePriority(formData: FormData) {
 
   revalidatePath("/life");
   revalidatePath("/life/today");
+  revalidatePath("/life/weekly");
 }
 
 export async function deletePriority(formData: FormData) {
@@ -164,6 +178,7 @@ export async function deletePriority(formData: FormData) {
 
   revalidatePath("/life");
   revalidatePath("/life/today");
+  revalidatePath("/life/weekly");
 }
 
 export async function reorderPriorities(ids: string[]) {
@@ -176,6 +191,59 @@ export async function reorderPriorities(ids: string[]) {
   );
 
   revalidatePath("/life/today");
+  revalidatePath("/life/weekly");
+}
+
+export async function updatePriority(formData: FormData) {
+  const db = getDb();
+  const id = formData.get("id") as string;
+  const title = formData.get("title") as string;
+  const pillar = (formData.get("pillar") as string) || "profit";
+  const date = (formData.get("date") as string) || undefined;
+  const category = (formData.get("category") as string) || "hit_list";
+  const domain = (formData.get("domain") as string) || null;
+  const priority = (formData.get("priority_level") as string) || null;
+  const startTime = (formData.get("startTime") as string) || null;
+  const endTime = (formData.get("endTime") as string) || null;
+  const notes = (formData.get("notes") as string) || null;
+
+  const updateData: Record<string, unknown> = {
+    title,
+    pillar,
+    category,
+    domain,
+    priority,
+    startTime,
+    endTime,
+    notes,
+  };
+  if (date) updateData.date = date;
+
+  await db
+    .update(priorities)
+    .set(updateData)
+    .where(eq(priorities.id, id));
+
+  revalidatePath("/life");
+  revalidatePath("/life/today");
+  revalidatePath("/life/weekly");
+}
+
+export async function getPrioritiesForWeek(weekStart: string) {
+  const db = getDb();
+  // weekStart is Monday (YYYY-MM-DD), calculate Sunday
+  const start = new Date(weekStart + "T00:00:00");
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  const weekEnd = end.toISOString().split("T")[0]!;
+
+  const items = await db
+    .select()
+    .from(priorities)
+    .where(and(gte(priorities.date, weekStart), lte(priorities.date, weekEnd)))
+    .orderBy(asc(priorities.sortOrder));
+
+  return items;
 }
 
 // --------------- Journal ---------------

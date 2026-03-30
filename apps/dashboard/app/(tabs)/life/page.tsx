@@ -1,4 +1,4 @@
-import { createDb, pillarScores, priorities, journalEntries, eq, desc } from "@cmd/db";
+import { createDb, pillarScores, priorities, journalEntries, eq, desc, and, gte, lte, asc } from "@cmd/db";
 import { cn } from "@cmd/ui";
 import type { PillarKey } from "@cmd/types";
 import Link from "next/link";
@@ -29,7 +29,12 @@ export default async function LifeOverview() {
   const weekStart = getWeekStart();
   const today = getTodayString();
 
-  const [currentScores, todayPriorities, recentJournal] = await Promise.all([
+  // Calculate week end (Sunday)
+  const weekEndDate = new Date(weekStart + "T00:00:00");
+  weekEndDate.setDate(weekEndDate.getDate() + 6);
+  const weekEnd = weekEndDate.toISOString().split("T")[0]!;
+
+  const [currentScores, todayPriorities, recentJournal, weekPriorities] = await Promise.all([
     db
       .select()
       .from(pillarScores)
@@ -44,6 +49,11 @@ export default async function LifeOverview() {
       .from(journalEntries)
       .orderBy(desc(journalEntries.createdAt))
       .limit(3),
+    db
+      .select()
+      .from(priorities)
+      .where(and(gte(priorities.date, weekStart), lte(priorities.date, weekEnd)))
+      .orderBy(asc(priorities.date), asc(priorities.sortOrder)),
   ]);
 
   const scoreMap = new Map(
@@ -53,6 +63,23 @@ export default async function LifeOverview() {
   const completed = todayPriorities.filter((p) => p.completed).length;
   const total = todayPriorities.length;
   const completionPct = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  // Weekly stats
+  const weekTotal = weekPriorities.length;
+  const weekCompleted = weekPriorities.filter((p) => p.completed).length;
+  const weekPct = weekTotal > 0 ? Math.round((weekCompleted / weekTotal) * 100) : 0;
+  const DAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const weekDayStats = DAY_LABELS.map((label, i) => {
+    const d = new Date(weekStart + "T00:00:00");
+    d.setDate(d.getDate() + i);
+    const dateStr = d.toISOString().split("T")[0]!;
+    const dayItems = weekPriorities.filter((p) => p.date === dateStr);
+    return {
+      label,
+      total: dayItems.length,
+      done: dayItems.filter((p) => p.completed).length,
+    };
+  });
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -145,6 +172,57 @@ export default async function LifeOverview() {
                 <li className="text-xs text-zinc-600">+{total - 5} more</li>
               )}
             </ul>
+          </>
+        )}
+      </div>
+
+      {/* Weekly Summary */}
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-3 md:p-5">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base md:text-lg font-semibold">This Week</h2>
+          <Link
+            href="/life/weekly"
+            className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+          >
+            View planner
+          </Link>
+        </div>
+        {weekTotal === 0 ? (
+          <p className="mt-3 text-sm text-zinc-600">No tasks planned this week.</p>
+        ) : (
+          <>
+            <div className="mt-3 flex items-center gap-3">
+              <div className="h-2 flex-1 rounded-full bg-zinc-800">
+                <div
+                  className="h-2 rounded-full bg-blue-500 transition-all"
+                  style={{ width: `${weekPct}%` }}
+                />
+              </div>
+              <span className="text-sm font-medium text-zinc-400">
+                {weekCompleted}/{weekTotal} ({weekPct}%)
+              </span>
+            </div>
+            <div className="mt-3 grid grid-cols-7 gap-1.5">
+              {weekDayStats.map((day) => (
+                <div key={day.label} className="flex flex-col items-center gap-1">
+                  <span className="text-[10px] font-medium text-zinc-500">{day.label}</span>
+                  <div
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-md text-xs font-bold",
+                      day.total === 0
+                        ? "bg-zinc-800/50 text-zinc-700"
+                        : day.done === day.total
+                        ? "bg-emerald-500/20 text-emerald-400"
+                        : day.done > 0
+                        ? "bg-amber-500/20 text-amber-400"
+                        : "bg-zinc-800 text-zinc-400"
+                    )}
+                  >
+                    {day.total > 0 ? `${day.done}/${day.total}` : "-"}
+                  </div>
+                </div>
+              ))}
+            </div>
           </>
         )}
       </div>
