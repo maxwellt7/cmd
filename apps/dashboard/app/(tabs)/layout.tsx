@@ -5,6 +5,7 @@ import { RelayStatus } from "../../components/relay-status";
 import { UserMenu } from "../../components/user-menu";
 import { getAccessibleTabs } from "@cmd/auth";
 import { syncUser } from "../actions/user";
+import { acceptInviteForUser } from "../actions/team";
 import type { UserRole } from "@cmd/types";
 
 export default async function TabsLayout({
@@ -26,6 +27,12 @@ export default async function TabsLayout({
       clerkUser.emailAddresses[0]?.emailAddress ?? "",
       `${clerkUser.firstName ?? ""} ${clerkUser.lastName ?? ""}`.trim() || "User",
     );
+
+    // Auto-accept any pending invites matching the user's email
+    const email = clerkUser.emailAddresses[0]?.emailAddress;
+    if (email) {
+      await acceptInviteForUser(clerkUser.id, email);
+    }
   }
 
   const role = (sessionClaims?.metadata as { role?: UserRole })?.role ?? "admin";

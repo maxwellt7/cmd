@@ -6,6 +6,7 @@ import { cn } from "@cmd/ui";
 
 const ADMIN_TABS = [
   { label: "Overview", href: "/admin" },
+  { label: "Team", href: "/admin/team" },
   { label: "Agents", href: "/admin/agents" },
   { label: "Integrations", href: "/admin/integrations" },
   { label: "Queue", href: "/admin/queue" },
