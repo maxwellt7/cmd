@@ -16,6 +16,7 @@ import { cn } from "@cmd/ui";
 interface Member {
   id: string;
   userId: string;
+  clerkId: string;
   email: string;
   name: string;
   role: string;
@@ -74,7 +75,7 @@ export function TeamManager({
   const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null);
 
   // Determine current user role within this company
-  const currentMember = members.find((m) => m.userId === clerkUserId) ?? null;
+  const currentMember = members.find((m) => m.clerkId === clerkUserId) ?? null;
   const canManage =
     currentMember?.role === "superadmin" || currentMember?.role === "admin";
 
@@ -140,7 +141,7 @@ export function TeamManager({
                   <RoleBadge role={member.role} />
                 )}
 
-                {canManage && member.userId !== clerkUserId && (
+                {canManage && member.clerkId !== clerkUserId && (
                   <>
                     {confirmRemoveId === member.id ? (
                       <div className="flex items-center gap-1">

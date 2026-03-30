@@ -44,6 +44,7 @@ export default async function TeamPage({
         members={members.map((m) => ({
           id: m.id,
           userId: m.userId,
+          clerkId: m.clerkId,
           email: m.email,
           name: m.name,
           role: m.role,

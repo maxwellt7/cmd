@@ -37,6 +37,7 @@ export async function getTeamMembers(companyId: string) {
     .select({
       id: companyMembers.id,
       userId: companyMembers.userId,
+      clerkId: users.clerkId,
       email: users.email,
       name: users.name,
       role: companyMembers.role,
