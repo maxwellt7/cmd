@@ -15,10 +15,12 @@ import {
   companies,
   companyMembers,
   resources,
+  users,
   eq,
   and,
   desc,
   asc,
+  sql,
 } from "@cmd/db";
 import { revalidatePath } from "next/cache";
 
@@ -30,12 +32,26 @@ function getDb() {
 // Companies
 // ---------------------------------------------------------------------------
 
-export async function getCompaniesForUser(userId: string) {
+/** Resolve Clerk userId to DB user ID */
+async function resolveDbUserId(clerkId: string): Promise<string | null> {
   const db = getDb();
+  const [user] = await db
+    .select({ id: users.id })
+    .from(users)
+    .where(eq(users.clerkId, clerkId))
+    .limit(1);
+  return user?.id ?? null;
+}
+
+export async function getCompaniesForUser(clerkUserId: string) {
+  const db = getDb();
+  const dbUserId = await resolveDbUserId(clerkUserId);
+  if (!dbUserId) return [];
+
   const memberships = await db
     .select({ companyId: companyMembers.companyId })
     .from(companyMembers)
-    .where(eq(companyMembers.userId, userId));
+    .where(eq(companyMembers.userId, dbUserId));
 
   if (memberships.length === 0) return [];
 
@@ -48,7 +64,13 @@ export async function createCompany(formData: FormData) {
   const db = getDb();
   const name = formData.get("name") as string;
   const parentCompanyId = (formData.get("parentCompanyId") as string) || null;
-  const userId = formData.get("userId") as string;
+  const clerkUserId = formData.get("userId") as string;
+
+  // Resolve Clerk ID to DB user ID
+  const dbUserId = await resolveDbUserId(clerkUserId);
+  if (!dbUserId) {
+    throw new Error("User not found in database. Please reload the page and try again.");
+  }
 
   const [company] = await db
     .insert(companies)
@@ -57,7 +79,7 @@ export async function createCompany(formData: FormData) {
 
   await db.insert(companyMembers).values({
     companyId: company.id,
-    userId,
+    userId: dbUserId,
     role: "superadmin",
   });
 

@@ -24,12 +24,22 @@ interface PriorityItem {
   sortOrder: number;
 }
 
+interface DailyAction {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  startDate: string;
+  endDate: string;
+}
+
 interface TodayViewProps {
   priorities: PriorityItem[];
+  dailyActions?: DailyAction[];
   currentDate: string;
 }
 
-export function TodayView({ priorities, currentDate }: TodayViewProps) {
+export function TodayView({ priorities, dailyActions = [], currentDate }: TodayViewProps) {
   const router = useRouter();
   const [showAdd, setShowAdd] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -95,6 +105,36 @@ export function TodayView({ priorities, currentDate }: TodayViewProps) {
           <span className="text-sm font-medium text-zinc-400">
             {completed}/{total} ({pct}%)
           </span>
+        </div>
+      )}
+
+      {/* Daily Actions from Pipeline */}
+      {dailyActions.length > 0 && (
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 rounded-full bg-zinc-400" />
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-zinc-400">
+              Daily Actions (from Pipeline)
+            </h3>
+          </div>
+          {dailyActions.map((action) => (
+            <div
+              key={action.id}
+              className="flex items-center gap-2 md:gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 md:px-4 py-2.5"
+            >
+              <div className="flex h-5 w-5 items-center justify-center rounded-md border-2 border-zinc-700 shrink-0">
+                {action.progress >= 100 && (
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-400" />
+                  </svg>
+                )}
+              </div>
+              <span className={cn("flex-1 text-sm", action.progress >= 100 ? "text-zinc-600 line-through" : "text-zinc-200")}>
+                {action.title}
+              </span>
+              <span className="text-xs text-zinc-600">{action.progress}%</span>
+            </div>
+          ))}
         </div>
       )}
 
