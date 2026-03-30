@@ -613,12 +613,30 @@ export async function createMeetingTemplate(formData: FormData) {
   const db = getDb();
   const companyId = formData.get("companyId") as string;
   const name = formData.get("name") as string;
-  const meetingType = (formData.get("meetingType") as string) || "level_10";
-  const segments =
-    (formData.get("segments") as string) ||
-    "segue,scorecard,rocks,headlines,todos,ids,conclude";
-  const segmentDurations =
-    (formData.get("segmentDurations") as string) || "5,5,5,5,5,60,5";
+  const rawType = (formData.get("meetingType") as string) || "level_10";
+  // Normalize meeting type: "Level 10" → "level_10", etc.
+  const meetingType = rawType.toLowerCase().replace(/\s+/g, "_");
+  const rawSegments = (formData.get("segments") as string) || "[]";
+  const rawDurations = (formData.get("segmentDurations") as string) || "[]";
+
+  // Handle both JSON arrays and comma-separated strings
+  let segments: string;
+  let segmentDurations: string;
+  try {
+    const parsed = JSON.parse(rawSegments);
+    segments = Array.isArray(parsed) ? parsed.join(",") : rawSegments;
+  } catch {
+    segments = rawSegments;
+  }
+  try {
+    const parsed = JSON.parse(rawDurations);
+    segmentDurations = Array.isArray(parsed) ? parsed.join(",") : rawDurations;
+  } catch {
+    segmentDurations = rawDurations;
+  }
+
+  if (!segments) segments = "segue,scorecard,rocks,headlines,todos,ids,conclude";
+  if (!segmentDurations) segmentDurations = "5,5,5,5,5,60,5";
 
   await db.insert(meetingTemplates).values({
     companyId,
@@ -635,9 +653,25 @@ export async function updateMeetingTemplate(formData: FormData) {
   const db = getDb();
   const id = formData.get("id") as string;
   const name = formData.get("name") as string;
-  const meetingType = (formData.get("meetingType") as string) || "level_10";
-  const segments = (formData.get("segments") as string) || "";
-  const segmentDurations = (formData.get("segmentDurations") as string) || "";
+  const rawType = (formData.get("meetingType") as string) || "level_10";
+  const meetingType = rawType.toLowerCase().replace(/\s+/g, "_");
+  const rawSegments = (formData.get("segments") as string) || "[]";
+  const rawDurations = (formData.get("segmentDurations") as string) || "[]";
+
+  let segments: string;
+  let segmentDurations: string;
+  try {
+    const parsed = JSON.parse(rawSegments);
+    segments = Array.isArray(parsed) ? parsed.join(",") : rawSegments;
+  } catch {
+    segments = rawSegments;
+  }
+  try {
+    const parsed = JSON.parse(rawDurations);
+    segmentDurations = Array.isArray(parsed) ? parsed.join(",") : rawDurations;
+  } catch {
+    segmentDurations = rawDurations;
+  }
 
   await db
     .update(meetingTemplates)
