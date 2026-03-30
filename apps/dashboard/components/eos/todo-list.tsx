@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { cn } from "@cmd/ui";
-import { addTodo, toggleTodo, deleteTodo } from "../../app/actions/eos";
+import { addTodo, toggleTodo, deleteTodo, updateTodoTitle } from "../../app/actions/eos";
 
 interface TodoItem {
   id: string;
@@ -16,7 +16,13 @@ interface TodoItem {
 
 type FilterType = "all" | "manual" | "meeting" | "issue";
 
-export function TodoList({ todos }: { todos: TodoItem[] }) {
+export function TodoList({
+  todos,
+  companyId,
+}: {
+  todos: TodoItem[];
+  companyId: string;
+}) {
   const [showAddForm, setShowAddForm] = useState(false);
   const [filter, setFilter] = useState<FilterType>("all");
 
@@ -54,6 +60,7 @@ export function TodoList({ todos }: { todos: TodoItem[] }) {
           }}
           className="rounded-lg border border-zinc-800 bg-zinc-900 p-3 md:p-4 space-y-3"
         >
+          <input type="hidden" name="companyId" value={companyId} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             <div className="col-span-2">
               <label className="mb-1 block text-xs text-zinc-500">Title</label>
@@ -149,6 +156,17 @@ export function TodoList({ todos }: { todos: TodoItem[] }) {
 }
 
 function TodoRow({ todo }: { todo: TodoItem }) {
+  const [editing, setEditing] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function handleTitleClick() {
+    if (!todo.completed) {
+      setEditing(true);
+      // Focus after render
+      setTimeout(() => inputRef.current?.focus(), 0);
+    }
+  }
+
   return (
     <div className="flex items-center gap-2 md:gap-3 rounded-lg border border-zinc-800 bg-zinc-900 px-3 md:px-4 py-2.5 md:py-3 transition-colors hover:bg-zinc-800/60">
       <form action={toggleTodo}>
@@ -167,14 +185,51 @@ function TodoRow({ todo }: { todo: TodoItem }) {
         </button>
       </form>
       <div className="min-w-0 flex-1">
-        <p
-          className={cn(
-            "text-sm break-words",
-            todo.completed ? "text-zinc-500 line-through" : "text-zinc-200"
-          )}
-        >
-          {todo.title}
-        </p>
+        {editing ? (
+          <form
+            action={async (formData) => {
+              await updateTodoTitle(formData);
+              setEditing(false);
+            }}
+          >
+            <input type="hidden" name="id" value={todo.id} />
+            <input
+              ref={inputRef}
+              name="title"
+              defaultValue={todo.title}
+              required
+              onBlur={(e) => {
+                if (e.target.value !== todo.title) {
+                  e.target.form?.requestSubmit();
+                } else {
+                  setEditing(false);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  e.currentTarget.form?.requestSubmit();
+                }
+                if (e.key === "Escape") {
+                  setEditing(false);
+                }
+              }}
+              className="w-full rounded-md border border-zinc-600 bg-zinc-800 px-2 py-0.5 text-sm text-zinc-50 focus:border-zinc-500 focus:outline-none"
+            />
+          </form>
+        ) : (
+          <p
+            onClick={handleTitleClick}
+            className={cn(
+              "text-sm break-words",
+              todo.completed
+                ? "text-zinc-500 line-through"
+                : "text-zinc-200 cursor-pointer hover:text-white"
+            )}
+          >
+            {todo.title}
+          </p>
+        )}
         <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600">
           <span>{todo.ownerName}</span>
           {todo.dueDate && (

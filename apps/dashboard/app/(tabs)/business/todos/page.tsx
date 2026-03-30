@@ -3,8 +3,15 @@ import { TodoList } from "../../../../components/eos/todo-list";
 
 export const dynamic = "force-dynamic";
 
-export default async function TodosPage() {
-  const todoList = await getAllTodos();
+export default async function TodosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ company?: string }>;
+}) {
+  const params = await searchParams;
+  const companyId = params.company ?? "";
+
+  const todoList = companyId ? await getAllTodos(companyId) : [];
 
   const serialized = todoList.map((t) => ({
     id: t.id,
@@ -16,5 +23,5 @@ export default async function TodosPage() {
     sourceId: t.sourceId,
   }));
 
-  return <TodoList todos={serialized} />;
+  return <TodoList todos={serialized} companyId={companyId} />;
 }

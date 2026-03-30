@@ -3,8 +3,15 @@ import { SeatChart } from "../../../../components/eos/seat-chart";
 
 export const dynamic = "force-dynamic";
 
-export default async function SeatsPage() {
-  const seatList = await getAllSeats();
+export default async function SeatsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ company?: string }>;
+}) {
+  const params = await searchParams;
+  const companyId = params.company ?? "";
+
+  const seatList = companyId ? await getAllSeats(companyId) : [];
 
   const serialized = seatList.map((s) => ({
     id: s.id,

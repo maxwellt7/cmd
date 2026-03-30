@@ -3,8 +3,15 @@ import { IssueBoard } from "../../../../components/eos/issue-board";
 
 export const dynamic = "force-dynamic";
 
-export default async function IssuesPage() {
-  const issueList = await getAllIssues();
+export default async function IssuesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ company?: string }>;
+}) {
+  const params = await searchParams;
+  const companyId = params.company ?? "";
+
+  const issueList = companyId ? await getAllIssues(companyId) : [];
 
   const serialized = issueList.map((i) => ({
     id: i.id,
@@ -19,7 +26,7 @@ export default async function IssuesPage() {
 
   return (
     <div className="mx-auto max-w-7xl">
-      <IssueBoard issues={serialized} />
+      <IssueBoard issues={serialized} companyId={companyId} />
     </div>
   );
 }

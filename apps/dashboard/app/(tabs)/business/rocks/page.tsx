@@ -3,10 +3,16 @@ import { AddRockForm, RockCard } from "../../../../components/eos/rock-forms";
 
 export const dynamic = "force-dynamic";
 
-export default async function RocksPage() {
+export default async function RocksPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ company?: string }>;
+}) {
+  const params = await searchParams;
+  const companyId = params.company ?? "";
   const quarter = `${new Date().getFullYear()}-Q${Math.ceil((new Date().getMonth() + 1) / 3)}`;
 
-  const rockList = await getRocksForQuarter(quarter);
+  const rockList = companyId ? await getRocksForQuarter(quarter, companyId) : [];
 
   const milestoneList =
     rockList.length > 0 ? await getAllMilestones() : [];
@@ -35,7 +41,11 @@ export default async function RocksPage() {
         <AddRockForm quarter={quarter} />
       </div>
 
-      {rockList.length === 0 ? (
+      {!companyId ? (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 py-16">
+          <p className="text-zinc-500">Select a company to view rocks</p>
+        </div>
+      ) : rockList.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 py-16">
           <p className="text-zinc-500">No rocks for {quarter}</p>
           <p className="mt-1 text-xs text-zinc-600">

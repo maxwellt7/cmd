@@ -28,11 +28,17 @@ function formatWeek(dateStr: string): string {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
-export default async function ScorecardPage() {
+export default async function ScorecardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ company?: string }>;
+}) {
+  const params = await searchParams;
+  const companyId = params.company ?? "";
   const quarter = `${new Date().getFullYear()}-Q${Math.ceil((new Date().getMonth() + 1) / 3)}`;
   const weeks = getWeekStarts(13);
 
-  const kpis = await getKpisForQuarter(quarter);
+  const kpis = companyId ? await getKpisForQuarter(quarter, companyId) : [];
 
   const entries = kpis.length > 0 ? await getAllEntries() : [];
 
@@ -54,7 +60,11 @@ export default async function ScorecardPage() {
         <AddKpiForm quarter={quarter} />
       </div>
 
-      {kpis.length === 0 ? (
+      {!companyId ? (
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 py-16">
+          <p className="text-zinc-500">Select a company to view scorecard</p>
+        </div>
+      ) : kpis.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-zinc-800 py-16">
           <p className="text-zinc-500">No KPIs defined for {quarter}</p>
           <p className="mt-1 text-xs text-zinc-600">
