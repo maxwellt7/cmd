@@ -5,6 +5,7 @@ import { cn } from "@cmd/ui";
 import type { PipelineLevel } from "@cmd/types";
 import {
   addPipelineEntry,
+  updatePipelineEntry,
   updateProgress,
   deletePipelineEntry,
 } from "../../app/actions/life";
@@ -59,6 +60,7 @@ export function PipelineView({ entries }: PipelineViewProps) {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
   const [showAddForm, setShowAddForm] = useState<string | null>(null);
   const [addParentId, setAddParentId] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   function toggleExpand(id: string) {
     setExpandedIds((prev) => {
@@ -111,6 +113,10 @@ export function PipelineView({ entries }: PipelineViewProps) {
             {entry.description && (
               <p className="text-xs text-zinc-500 truncate">{entry.description}</p>
             )}
+            {/* Dates display */}
+            <p className="text-xs text-zinc-600 mt-0.5">
+              {entry.startDate} → {entry.endDate}
+            </p>
           </div>
 
           {/* Progress */}
@@ -146,6 +152,15 @@ export function PipelineView({ entries }: PipelineViewProps) {
             </button>
           </form>
 
+          {/* Edit */}
+          <button
+            type="button"
+            onClick={() => setEditingId(editingId === entry.id ? null : entry.id)}
+            className="rounded px-1.5 py-0.5 text-xs text-zinc-600 hover:bg-zinc-800 hover:text-zinc-300"
+          >
+            Edit
+          </button>
+
           {/* Delete */}
           <form action={deletePipelineEntry}>
             <input type="hidden" name="id" value={entry.id} />
@@ -157,6 +172,11 @@ export function PipelineView({ entries }: PipelineViewProps) {
             </button>
           </form>
         </div>
+
+        {/* Inline edit form */}
+        {editingId === entry.id && (
+          <EditEntryForm entry={entry} onClose={() => setEditingId(null)} />
+        )}
 
         {/* Children */}
         {isExpanded && (
@@ -208,6 +228,82 @@ export function PipelineView({ entries }: PipelineViewProps) {
         </button>
       )}
     </div>
+  );
+}
+
+function EditEntryForm({
+  entry,
+  onClose,
+}: {
+  entry: Entry;
+  onClose: () => void;
+}) {
+  const [submitting, setSubmitting] = useState(false);
+
+  return (
+    <form
+      action={async (formData) => {
+        setSubmitting(true);
+        await updatePipelineEntry(formData);
+        setSubmitting(false);
+        onClose();
+      }}
+      className="mt-1 rounded-lg border border-zinc-700 bg-zinc-900 p-3 space-y-2"
+    >
+      <input type="hidden" name="id" value={entry.id} />
+
+      <input
+        name="title"
+        required
+        defaultValue={entry.title}
+        placeholder="Title"
+        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-300 placeholder-zinc-600 focus:border-zinc-600 focus:outline-none"
+      />
+      <input
+        name="description"
+        defaultValue={entry.description}
+        placeholder="Description (optional)"
+        className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-300 placeholder-zinc-600 focus:border-zinc-600 focus:outline-none"
+      />
+      <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex-1">
+          <label className="block text-xs text-zinc-500 mb-1">Start Date</label>
+          <input
+            type="date"
+            name="startDate"
+            defaultValue={entry.startDate}
+            required
+            className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-300 focus:border-zinc-600 focus:outline-none"
+          />
+        </div>
+        <div className="flex-1">
+          <label className="block text-xs text-zinc-500 mb-1">End Date</label>
+          <input
+            type="date"
+            name="endDate"
+            defaultValue={entry.endDate}
+            required
+            className="w-full rounded border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-sm text-zinc-300 focus:border-zinc-600 focus:outline-none"
+          />
+        </div>
+      </div>
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          disabled={submitting}
+          className="rounded bg-zinc-800 px-4 py-1.5 text-sm font-medium text-zinc-300 hover:bg-zinc-700 disabled:opacity-50"
+        >
+          {submitting ? "Saving..." : "Save"}
+        </button>
+        <button
+          type="button"
+          onClick={onClose}
+          className="rounded px-4 py-1.5 text-sm text-zinc-500 hover:text-zinc-300"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }
 
