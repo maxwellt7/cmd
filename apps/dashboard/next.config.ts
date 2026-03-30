@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname, "../.."),
   },
+  // Standalone output for production: minimal node_modules, ready for Node/Docker
+  output: "standalone",
 };
 
 export default nextConfig;

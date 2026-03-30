@@ -3,12 +3,18 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "start": "pnpm --filter=@cmd/dashboard start",
     "dev": "turbo dev",
+    "dev:app": "pnpm --filter=@cmd/dashboard dev",
+    "dev:turbo": "pnpm --filter=@cmd/dashboard dev:turbo",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "db:generate": "turbo db:generate",
     "db:migrate": "turbo db:migrate",
     "db:push": "turbo db:push"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "turbo": "^2.8.0",

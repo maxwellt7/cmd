@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev": "NODE_OPTIONS='--max-old-space-size=4096' next dev",
+    "dev:turbo": "next dev --turbopack",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
@@ -19,6 +20,7 @@
     "@cmd/auth": "workspace:*",
     "@cmd/types": "workspace:*",
     "@cmd/ui": "workspace:*",
+    "drizzle-orm": "^0.39.0",
     "geist": "^1.4.0"
   },
   "devDependencies": {
